@@ -18,12 +18,12 @@ export type LoginProps = {
 
 export const Login: React.FC<LoginProps> = ({ }) => {
     const router = useRouter();
-    const [, LoginEndpoint] = useLoginMutation();
+    const [, loginEndpoint] = useLoginMutation();
     const [serverErr, setServerErr] = useState('');
 
     const submitRegForm = async (values, { setErrors }) => {
         const { username, password } = values;
-        const response = await LoginEndpoint({ username, password });
+        const response = await loginEndpoint({ username, password });
         if (response?.error) {
             setServerErr(serverError(response.error));
         }

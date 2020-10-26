@@ -1,7 +1,11 @@
+import NavBar from "../components/NavBar"
+
 const Index = () => (
-  <div>
-    hello world
-  </div>
+  <>
+    <NavBar>
+      hello world
+    </NavBar>
+  </>
 )
 
 export default Index
