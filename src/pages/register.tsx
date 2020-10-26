@@ -1,12 +1,26 @@
 import { FormControl, FormLabel, Input, FormErrorMessage, Button } from '@chakra-ui/core';
 import { Form, Formik } from 'formik';
 import React from 'react';
+import { useMutation } from 'urql';
 import InputField from '../components/InputField';
 import Wrapper from '../components/Wrapper';
+import { useRegisterMutation } from '../generated/graphql';
 export type RegisterProps = {
 
 }
+
+
+
+
 export const Register: React.FC<RegisterProps> = ({ }) => {
+    const [, registerEndpoint] = useRegisterMutation();
+
+    const submitRegForm = async (values) => {
+        const { name, username, email, password } = values;
+        const response = await registerEndpoint({ name, username, email, password });
+        response.data.register.
+    }
+
 
     return (
         <Wrapper variant='small'>
@@ -41,8 +55,5 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
 };
 
 
-const submitRegForm = (values) => {
-    console.log(values);
-}
 
 export default Register;
