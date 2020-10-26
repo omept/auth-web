@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, FormErrorMessage, Button, Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton } from '@chakra-ui/core';
+import { Button, Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton } from '@chakra-ui/core';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import InputField from '../components/InputField';
@@ -25,7 +25,7 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
         const { name, username, email, password } = values;
         const response = await registerEndpoint({ name, username, email, password });
         if (response?.error) {
-            setServerErr(serverError(response.error)['server_error']);
+            setServerErr(serverError(response.error));
         }
         if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));

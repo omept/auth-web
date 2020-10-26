@@ -1,5 +1,4 @@
 import { CombinedError } from "urql";
-import { FieldError } from "../generated/graphql";
 import { __prod__ } from "./constants";
 
 export const serverError = ({ graphQLErrors }: CombinedError) => {
