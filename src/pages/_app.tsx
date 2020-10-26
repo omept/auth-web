@@ -3,7 +3,7 @@ import React from 'react'
 import { Provider, createClient, dedupExchange, fetchExchange, Query } from 'urql';
 import { cacheExchange, Cache, QueryInput } from '@urql/exchange-graphcache';
 import theme from '../theme'
-import { LoginMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql';
+import { LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql';
 
 
 //use a typed function for handing the cache 
@@ -26,6 +26,18 @@ const client = createClient({
     updates: {
       Mutation: {
         // update login cache 
+        logout: (_result, args, cache, info) => {
+          customUpdateQuery<LogoutMutation, MeQuery>(
+            cache,
+            { query: MeDocument },
+            _result,
+            (result, query) => {
+              return {
+                me: null,
+              }
+            }
+          );
+        }, // update login cache 
         login: (_result, args, cache, info) => {
           customUpdateQuery<LoginMutation, MeQuery>(
             cache,
