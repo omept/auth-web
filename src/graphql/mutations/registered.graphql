@@ -12,8 +12,16 @@ mutation Register(
       name: $name
     }
   ) {
-    id
-    name
-    username
+    user {
+      id
+      name
+      email
+      username
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
   }
 }

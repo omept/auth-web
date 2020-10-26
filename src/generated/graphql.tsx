@@ -49,7 +49,7 @@ export type Mutation = {
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost?: Maybe<Scalars['String']>;
-  register?: Maybe<User>;
+  register?: Maybe<RegistrationResponse>;
   login?: Maybe<LoginResponse>;
 };
 
@@ -79,6 +79,18 @@ export type MutationLoginArgs = {
   options: LoginParams;
 };
 
+export type RegistrationResponse = {
+  __typename?: 'RegistrationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type RegistrationParams = {
   name: Scalars['String'];
   username?: Maybe<Scalars['String']>;
@@ -90,12 +102,6 @@ export type LoginResponse = {
   __typename?: 'LoginResponse';
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
 };
 
 export type LoginParams = {
@@ -115,8 +121,14 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'name' | 'username'>
+    { __typename?: 'RegistrationResponse' }
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email' | 'username' | 'createdAt'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
   )> }
 );
 
@@ -124,9 +136,17 @@ export type RegisterMutation = (
 export const RegisterDocument = gql`
     mutation Register($name: String!, $username: String!, $email: String!, $password: String!) {
   register(options: {email: $email, password: $password, username: $username, name: $name}) {
-    id
-    name
-    username
+    user {
+      id
+      name
+      email
+      username
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
   }
 }
     `;
