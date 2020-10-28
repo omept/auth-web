@@ -3,6 +3,8 @@ import React from "react";
 import NextLink from "next/link";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
+import { createUrqlClient } from "../utils/createUrqlClient";
+import { withUrqlClient } from 'next-urql';
 
 export type NavBarProps = {}
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
@@ -14,20 +16,18 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
         logoutUser();
     }
 
-    let body = null;
+    let body;
 
     if (fetching) {
-        console.log("fetching me query");
 
     } else if (!data?.me) {
-        console.log(data);
         body = (
             <>
                 <NextLink href="/login">
                     <Link mr={2}>Login</Link>
                 </NextLink>
                 <NextLink href="/register">
-                    <Link >Register</Link>
+                    <Link>Register</Link>
                 </NextLink>
             </>
         )
@@ -45,10 +45,10 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     return (
         <Flex bg="tan" p={4}>
             <Box ml="auto">
-                {body}
+                {isServer() ? '' : body}
             </Box>
         </Flex >
     )
 };
 
-export default NavBar;
+export default withUrqlClient(createUrqlClient)(NavBar);
