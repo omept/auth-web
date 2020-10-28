@@ -7,7 +7,7 @@ import { isServer } from "../utils/isServer";
 
 const Index = () => {
   const [{ data, fetching }] = usePostsQuery({
-    // pause: isServer()
+    pause: isServer()
   });
   return (
     <>
