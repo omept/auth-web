@@ -1,4 +1,4 @@
-import { Button, Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton } from '@chakra-ui/core';
+import { Button, Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton, Link } from '@chakra-ui/core';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import InputField from '../components/InputField';
@@ -7,7 +7,9 @@ import { useLoginMutation } from '../generated/graphql';
 import { serverError } from '../utils/serverErrorMap';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
-
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from "../utils/createUrqlClient";
+import NextLink from "next/link";
 
 export type LoginProps = {
 
@@ -52,11 +54,15 @@ export const Login: React.FC<LoginProps> = ({ }) => {
                 {({ isSubmitting }) => (
                     <Form>
                         {/* Easy Way */}
-                        <InputField name='username' placeholder="username or email" label='username' type="username" />
+                        <InputField name='username' placeholder="username or email" label='username' type="text" />
 
                         {/* Easy Way */}
                         <InputField name="password" placeholder="password" label="Password" type="password" />
+                        <br />
 
+                        <NextLink href="/request-forgot-password">
+                            <Link mr={2}>Forgot password ?</Link>
+                        </NextLink>
                         <Button mt="2rem" float="right" isLoading={isSubmitting} type="submit" color="teal">Login</Button>
                     </Form>
                 )}
@@ -67,4 +73,4 @@ export const Login: React.FC<LoginProps> = ({ }) => {
 
 
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);

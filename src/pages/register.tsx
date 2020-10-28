@@ -7,7 +7,9 @@ import { useRegisterMutation } from '../generated/graphql';
 import { serverError } from '../utils/serverErrorMap';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
-
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from "../utils/createUrqlClient";
+import NavBar from '../components/NavBar';
 
 export type RegisterProps = {
 
@@ -46,38 +48,41 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
     );
 
     return (
-        <Wrapper variant='small'>
-            {serverErr ? err(serverErr) : ''}
-            <Formik initialValues={{ username: "", password: "", email: "", name: "" }} onSubmit={submitRegForm}>
-                {({ isSubmitting }) => (
-                    <Form>
-                        {/* Easy Way */}
-                        <InputField name='name' placeholder="full name" label='Name' type="text" />
+        <>
+            <NavBar />
+            <Wrapper variant='small'>
+                {serverErr ? err(serverErr) : ''}
+                <Formik initialValues={{ username: "", password: "", email: "", name: "" }} onSubmit={submitRegForm}>
+                    {({ isSubmitting }) => (
+                        <Form>
+                            {/* Easy Way */}
+                            <InputField name='name' placeholder="full name" label='Name' type="text" />
 
-                        {/* Easy Way */}
-                        <InputField name='email' placeholder="email" label='Email' type="email" />
+                            {/* Easy Way */}
+                            <InputField name='email' placeholder="email" label='Email' type="email" />
 
-                        {/* Hard war */}
-                        {/* <FormControl marginTop="2rem">
+                            {/* Hard war */}
+                            {/* <FormControl marginTop="2rem">
                             <FormLabel htmlFor="username">Username</FormLabel>
                             <Input id="username" placeholder="username or email" /> */}
-                        {/* <FormErrorMessage>{form.errors.name}</FormErrorMessage> */}
-                        {/* </FormControl> */}
+                            {/* <FormErrorMessage>{form.errors.name}</FormErrorMessage> */}
+                            {/* </FormControl> */}
 
-                        {/* Easy Way */}
-                        <InputField name="username" placeholder="username" label="Username" type="text" />
+                            {/* Easy Way */}
+                            <InputField name="username" placeholder="username" label="Username" type="text" />
 
-                        {/* Easy Way */}
-                        <InputField name="password" placeholder="password" label="Password" type="password" />
+                            {/* Easy Way */}
+                            <InputField name="password" placeholder="password" label="Password" type="password" />
 
-                        <Button mt="2rem" float="right" isLoading={isSubmitting} type="submit" color="teal">Register</Button>
-                    </Form>
-                )}
-            </Formik>
-        </Wrapper>
+                            <Button mt="2rem" float="right" isLoading={isSubmitting} type="submit" color="teal">Register</Button>
+                        </Form>
+                    )}
+                </Formik>
+            </Wrapper>
+        </>
     );
 };
 
 
 
-export default Register;
+export default withUrqlClient(createUrqlClient)(Register);

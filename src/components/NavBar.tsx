@@ -5,8 +5,9 @@ import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
 export type NavBarProps = {}
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
-    const [{ data, fetching }] = useMeQuery({ requestPolicy: 'network-only' });
+
     const [{ fetching: logoutFetching }, logoutUser] = useLogoutMutation();
+    const [{ data, fetching }] = useMeQuery();
 
     const logout = () => {
         logoutUser();
@@ -15,8 +16,10 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     let body = null;
 
     if (fetching) {
+        console.log("fetching me query");
 
     } else if (!data?.me) {
+        console.log(data);
         body = (
             <>
                 <NextLink href="/login">
