@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from "../utils/createUrqlClient";
 import NextLink from "next/link";
+import Layout from '../components/Layout';
 
 export type LoginProps = {
 
@@ -48,7 +49,8 @@ export const Login: React.FC<LoginProps> = ({ }) => {
     );
 
     return (
-        <Wrapper variant='small'>
+
+        <Layout variant='small'>
             {serverErr ? err(serverErr) : ''}
             <Formik initialValues={{ username: "", password: "" }} onSubmit={submitRegForm}>
                 {({ isSubmitting }) => (
@@ -67,7 +69,8 @@ export const Login: React.FC<LoginProps> = ({ }) => {
                     </Form>
                 )}
             </Formik>
-        </Wrapper>
+        </Layout>
+
     );
 };
 

@@ -11,6 +11,7 @@ import InputField from '../../components/InputField';
 import Wrapper from '../../components/Wrapper';
 import { appServerError } from '../../utils/appServerErrorMap';
 import { usePasswordResetMutation } from "../../generated/graphql";
+import { NavBar } from '../../components/NavBar';
 
 type ForgotPasswordProps = {
     token: string
@@ -33,12 +34,12 @@ const ForgotPassword: NextPage<ForgotPasswordProps> = ({ token }) => {
         const { email, password, confirm_password, token } = values;
 
         if (password !== confirm_password) {
-            setErrors([{
-                "password": "passwords must match"
-            }, {
+            console.log('password dont match');
+            setErrors({
+                "password": "passwords must match",
                 "confirm_password": "passwords must match"
             }
-            ]);
+            );
         } else {
             const response = await passwordReset({ email, password, password_token: token });
             if (response?.error) {
@@ -66,7 +67,7 @@ const ForgotPassword: NextPage<ForgotPasswordProps> = ({ token }) => {
 
     return (
         <>
-
+            <NavBar />
             <Wrapper variant='small'>
                 {serverErr ? err(serverErr) : ''}
                 <Formik initialValues={{ email: "", password: "", confirm_password: "", token }} onSubmit={submitForm}>
@@ -100,4 +101,4 @@ ForgotPassword.getInitialProps = ({ query }) => {
 }
 
 
-export default withUrqlClient(createUrqlClient)(ForgotPassword);
+export default withUrqlClient(createUrqlClient, { ssr: false })(ForgotPassword);

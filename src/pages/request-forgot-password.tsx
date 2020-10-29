@@ -9,7 +9,7 @@ import { toErrorMap } from '../utils/toErrorMap';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { appServerError } from '../utils/appServerErrorMap';
-import NavBar from '../components/NavBar';
+import { NavBar } from '../components/NavBar';
 
 export type RequestForgotPasswordProps = {
 
@@ -55,7 +55,7 @@ export const RequestForgotPassword: React.FC<RequestForgotPasswordProps> = ({ })
         <Alert status="success" mb="2rem">
             <AlertIcon />
             <AlertTitle mr={2}>Success</AlertTitle>
-            <AlertDescription>Password reset successful</AlertDescription>
+            <AlertDescription>Password reset link has been sent to your email</AlertDescription>
         </Alert>
     );
 

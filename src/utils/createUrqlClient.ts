@@ -1,5 +1,5 @@
 import { dedupExchange, fetchExchange, ssrExchange } from "urql";
-import { LoginMutation, MeQuery, MeDocument, RegisterMutation, LogoutMutation, RequestForgotPasswordMutation } from "../generated/graphql";
+import { LoginMutation, MeQuery, MeDocument, RegisterMutation, LogoutMutation, RequestForgotPasswordMutation, PasswordResetMutation } from "../generated/graphql";
 import { customUpdateQuery } from './customUpdateQuery';
 import { cacheExchange } from '@urql/exchange-graphcache';
 
@@ -13,6 +13,16 @@ export const createUrqlClient = (ssrExchange: any) => ({
         cacheExchange({
             updates: {
                 Mutation: {
+                    // update cache  when logout is called
+                    passwordReset: (_result, args, cache, info) => {
+                        customUpdateQuery<PasswordResetMutation, MeQuery>(
+                            cache,
+                            { query: MeDocument },
+                            _result,
+                            () => ({ me: null }) // for now we're only interested in the "me" index of the normalised cache }
+
+                        );
+                    },
                     // update cache  when logout is called
                     logout: (_result, args, cache, info) => {
                         customUpdateQuery<LogoutMutation, MeQuery>(
