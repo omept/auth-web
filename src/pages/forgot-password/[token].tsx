@@ -96,7 +96,7 @@ const ForgotPassword: NextPage<ForgotPasswordProps> = ({ token }) => {
 
 ForgotPassword.getInitialProps = ({ query }) => {
     return {
-        token: query.token as string
+        token: query.token as string // this could have been gotten from router. If you want to use ssr, using getInitialProps() is the right way
     }
 }
 

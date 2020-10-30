@@ -11,6 +11,7 @@ import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from "../utils/createUrqlClient";
 import NavBar from '../components/NavBar';
 import Layout from '../components/Layout';
+import { useOnlyUnAuthenticated } from '../utils/useOnlyUnAuthenticated';
 
 export type RegisterProps = {
 
@@ -20,6 +21,7 @@ export type RegisterProps = {
 
 
 export const Register: React.FC<RegisterProps> = ({ }) => {
+    useOnlyUnAuthenticated();
     const router = useRouter();
     const [, registerEndpoint] = useRegisterMutation();
     const [serverErr, setServerErr] = useState('');

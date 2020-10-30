@@ -11,6 +11,7 @@ import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from "../utils/createUrqlClient";
 import NextLink from "next/link";
 import Layout from '../components/Layout';
+import { useOnlyUnAuthenticated } from '../utils/useOnlyUnAuthenticated';
 
 export type LoginProps = {
 
@@ -20,6 +21,7 @@ export type LoginProps = {
 
 
 export const Login: React.FC<LoginProps> = ({ }) => {
+    useOnlyUnAuthenticated();
     const router = useRouter();
     const [, loginEndpoint] = useLoginMutation();
     const [serverErr, setServerErr] = useState('');
@@ -35,7 +37,11 @@ export const Login: React.FC<LoginProps> = ({ }) => {
         }
 
         if (response.data?.login.user) {
-            router.push("/")
+            if (typeof router.query.next === 'string') {
+                router.push(String(router.query.next));
+            } else {
+                router.push("/");
+            }
         }
     }
 
